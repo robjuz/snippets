@@ -60,4 +60,8 @@ class CsvSnippet extends Snippet {
 
 		ini_set( 'auto_detect_line_endings', false );
 	}
+
+	public static function name() {
+		return 'CSV';
+	}
 }

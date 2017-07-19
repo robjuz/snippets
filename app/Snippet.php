@@ -3,27 +3,26 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 abstract class Snippet extends Model {
-	use Uuids;
+	use Uuids, ValidatesRequests;
+
 
 	public $incrementing = false;
 	protected $table = 'snippets';
 	protected $fillable = [ 'title', 'body', 'language' ];
 
-	static $languages = [
-		'csv' => 'CSV',
-		'text' => 'Plain text',
-//		'js'  => 'JavaScript',
-//		'php' => 'PHP'
+	public $validateRules = [
+		'language' => 'required'
 	];
 
-
-	protected static $lookup = [
-		'csv' => CsvSnippet::class,
-		'text' => TextSnippet::class
+	static $languages = [
+		'csv'   => CsvSnippet::class,
+		'text'  => TextSnippet::class,
+		'image' => ImageSnippet::class
 	];
 
 	/**
@@ -32,19 +31,19 @@ abstract class Snippet extends Model {
 	 * @return mixed
 	 */
 	public static function getInstance( $language ) {
-		return new static::$lookup[ $language ];
+		return new static::$languages[ $language ];
 	}
 
 	public function getClass( $language ) {
-		return static::$lookup[ $language ];
+		return static::$languages[ $language ];
 	}
 
 	public static function allSnippets() {
 		$snippets = DB::table( 'snippets' )->get();
 
 		return $snippets->map( function ( $snippet ) {
-			return isset( static::$lookup[ $snippet->language ] )
-				? ( new static::$lookup[ $snippet->language ] )->forceFill(
+			return isset( static::$languages[ $snippet->language ] )
+				? ( new static::$languages[ $snippet->language ] )->forceFill(
 					json_decode( json_encode( $snippet ), true )
 				)
 				: false;
@@ -59,5 +58,13 @@ abstract class Snippet extends Model {
 	 */
 	abstract protected function persist( Request $request );
 
+	/**
+	 * @return mixed
+	 */
 	abstract public function getRouteAttribute();
+
+	/**
+	 * @return mixed
+	 */
+	abstract public static function name();
 }

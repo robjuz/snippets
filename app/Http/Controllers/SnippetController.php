@@ -19,11 +19,11 @@ class SnippetController extends Controller {
 
 	public function store( Request $request ) {
 
-		$this->validate($request, [
-			'language' => 'required'
-		]);
+		$snippet = Snippet::getInstance($request->language);
 
-		$snippet = Snippet::getInstance($request->language)->persist($request);
+		$snippet->validate($request, $snippet->validateRules);
+
+		$snippet->persist($request);
 
 		return redirect($snippet->route);
 	}

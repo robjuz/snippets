@@ -23,3 +23,9 @@ Route::get('csv-snippet/{snippet}', 'CsvSnippetController@show')->name('csv-snip
 
 Route::get('text-snippets', 'TextSnippetController@index')->name('text-snippet.index');
 Route::get('text-snippet/{snippet}', 'TextSnippetController@show')->name('text-snippet.show');
+
+Route::get('image-snippets', 'ImageSnippetController@index')->name('image-snippet.index');
+Route::get('image-snippet/{snippet}', 'ImageSnippetController@show')->name('image-snippet.show');
+
+//Route::get('php-snippets', 'PhpSnippetController@index')->name('php-snippet.index');
+//Route::get('php-snippet/{snippet}', 'PhpSnippetController@show')->name('php-snippet.show');

@@ -6,14 +6,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class TextSnippet extends Snippet {
+class ImageSnippet extends Snippet {
+
+	public $validateRules = [
+		'language' => 'required',
+//		'file' => 'image'
+	];
 
 	protected static function boot()
 	{
 		parent::boot();
 
 		static::addGlobalScope('language', function (Builder $builder) {
-			$builder->whereLanguage('text');
+			$builder->whereLanguage('image');
 		});
 	}
 
@@ -22,10 +27,10 @@ class TextSnippet extends Snippet {
 		$data = $request->all();
 
 		if ( $request->hasFile( 'file' ) ) {
-			$data['body'] = file_get_contents(
+			$data['body'] = "data:image/jpeg;base64,". base64_encode(file_get_contents(
 				$request->file( 'file' )
 				        ->getRealPath()
-			);
+			));
 		}
 
 		$this->fill( $data )->save();
@@ -34,10 +39,10 @@ class TextSnippet extends Snippet {
 	}
 
 	public function getRouteAttribute() {
-		return route('text-snippet.show', $this);
+		return route('image-snippet.show', $this);
 	}
 
 	public static function name() {
-		return 'Plain text';
+		return 'JPEG, PNG etc.';
 	}
 }
