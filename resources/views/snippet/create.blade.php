@@ -42,7 +42,7 @@
 
         <div class="form-group">
             <label for="title" class="sr-only control-label">Title</label>
-                <input type="text" class="form-control" name="title" placeholder="Snippet title">
+                <input type="text" class="form-control" name="title" placeholder="Snippet title" required>
         </div>
 
         <div class="form-group">

@@ -34,7 +34,7 @@ class TextSnippet extends Snippet {
 	}
 
 	public function getRouteAttribute() {
-		return route('text-snippet.show', $this);
+		return route('text-snippet.show', [$this, $this->slug]);
 	}
 
 	public static function name() {

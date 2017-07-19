@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class ImageSnippet extends Snippet {
 
-	public $validateRules = [
-		'language' => 'required',
-//		'file' => 'image'
-	];
+//	public $validateRules = [
+//		'title' => ''
+//		'language' => 'required',
+////		'file' => 'image'
+//	];
 
 	protected static function boot()
 	{
@@ -39,7 +40,7 @@ class ImageSnippet extends Snippet {
 	}
 
 	public function getRouteAttribute() {
-		return route('image-snippet.show', $this);
+		return route('image-snippet.show', [$this, $this->slug]);
 	}
 
 	public static function name() {

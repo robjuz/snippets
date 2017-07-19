@@ -16,6 +16,7 @@ abstract class Snippet extends Model {
 	protected $fillable = [ 'title', 'body', 'language' ];
 
 	public $validateRules = [
+		'title' => 'required',
 		'language' => 'required'
 	];
 
@@ -48,6 +49,14 @@ abstract class Snippet extends Model {
 				)
 				: false;
 		} );
+	}
+
+	public function getSlugAttribute() {
+		return str_slug($this->title);
+	}
+
+	public function getTitleAttribute( $value ) {
+		return $value ?: 'Untitled';
 	}
 
 

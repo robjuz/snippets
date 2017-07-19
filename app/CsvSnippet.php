@@ -34,7 +34,7 @@ class CsvSnippet extends Snippet {
 	}
 
 	public function getRouteAttribute() {
-		return route('csv-snippet.show', $this);
+		return route('csv-snippet.show', [$this, $this->slug]);
 	}
 
 	public function setBodyAttribute( $value ) {
