@@ -6,6 +6,13 @@ use App\Snippet;
 use Illuminate\Http\Request;
 
 class SnippetController extends Controller {
+
+	public function index() {
+		$snippets = Snippet::allSnippets();
+
+		return view('snippet.index', compact('snippets'));
+	}
+
 	public function create() {
 		return view( 'snippet.create' );
 	}
@@ -16,12 +23,8 @@ class SnippetController extends Controller {
 			'language' => 'required'
 		]);
 
-		$language = $request->language;
+		$snippet = Snippet::getInstance($request->language)->persist($request);
 
-		$snippetClass = "App\\{$language}Snippet";
-
-		$snippet = (new $snippetClass)->persist($request);
-
-		return redirect()->route("{$language}-snippet.show", $snippet);
+		return redirect($snippet->route);
 	}
 }
